@@ -5,8 +5,11 @@
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- speed optimizations -->
+  <link rel="preconnect" href="https://studio.code.org">
+
   <style>
-    /* FORCE WHITE EVERYWHERE */
+    /* FORCE WHITE */
     html {
       background: #fff;
     }
@@ -20,15 +23,15 @@
       min-height: 100vh;
     }
 
-    /* SCALE VISUALLY (does NOT change game size) */
+    /* SCALE VISUALLY ONLY */
     .scale-wrapper {
       width: 440px;
       height: 420px;
-      transform: scale(2.4); /* change if needed */
+      transform: scale(2.4);
       transform-origin: top center;
     }
 
-    /* CROP AREA (hides Code.org logo + scroll) */
+    /* CROP AREA (hides logo + scroll) */
     .crop {
       width: 440px;
       height: 380px;
@@ -40,7 +43,11 @@
       height: 757px;
       border: 0;
       display: block;
-      transform: translateY(-20px); /* tweak if needed */
+
+      /* feels faster */
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      transform: translateY(-20px);
     }
 
     /* FULLSCREEN BUTTON */
@@ -68,6 +75,8 @@
   <div class="scale-wrapper">
     <div class="crop">
       <iframe
+        loading="lazy"
+        onload="this.style.opacity=1"
         src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
         allowfullscreen>
       </iframe>
