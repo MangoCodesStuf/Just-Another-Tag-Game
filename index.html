@@ -14,19 +14,27 @@
       min-height: 100vh;
     }
 
-    /* This wrapper controls VISUAL size only */
+    /* Visual scaling wrapper */
     .scale-wrapper {
       width: 440px;
       height: 440px;
-      transform: scale(1.4); /* 👈 change this to 1.3 / 1.5 if needed */
+      transform: scale(1.4); /* adjust if needed */
       transform-origin: top center;
+    }
+
+    /* Crop box (this hides Code.org logo + scroll) */
+    .crop {
+      width: 440px;
+      height: 440px;
+      overflow: hidden;
     }
 
     iframe {
       width: 440px;
-      height: 757px;
+      height: 757px; /* taller than crop */
       border: 0;
       display: block;
+      transform: translateY(-20px); /* tweak if needed */
     }
 
     /* Optional fullscreen button */
@@ -51,13 +59,15 @@
 <body>
 
   <div class="scale-wrapper">
-    <iframe
-      src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
-      allowfullscreen>
-    </iframe>
+    <div class="crop">
+      <iframe
+        src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
+        allowfullscreen>
+      </iframe>
+    </div>
   </div>
 
-  <!-- Fullscreen button (works on GitHub Pages, may be blocked in Google Sites) -->
+  <!-- Fullscreen button -->
   <button class="fs-btn" onclick="document.documentElement.requestFullscreen()">
     Fullscreen
   </button>
