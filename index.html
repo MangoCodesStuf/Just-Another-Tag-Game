@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+    /* FORCE WHITE EVERYWHERE */
+    html {
+      background: #fff;
+    }
+
     body {
       margin: 0;
       background: #fff;
@@ -14,15 +20,15 @@
       min-height: 100vh;
     }
 
-    /*  scaling     */
+    /* SCALE VISUALLY (does NOT change game size) */
     .scale-wrapper {
       width: 440px;
       height: 420px;
-      transform: scale(2.4); /* adjust if needed */
+      transform: scale(2.4); /* change if needed */
       transform-origin: top center;
     }
 
-    /* hide logo */
+    /* CROP AREA (hides Code.org logo + scroll) */
     .crop {
       width: 440px;
       height: 380px;
@@ -31,13 +37,13 @@
 
     iframe {
       width: 440px;
-      height: 757px; /* taller than crop */
+      height: 757px;
       border: 0;
       display: block;
       transform: translateY(-20px); /* tweak if needed */
     }
 
-    /* Optional fullscreen button */
+    /* FULLSCREEN BUTTON */
     .fs-btn {
       position: fixed;
       bottom: 16px;
@@ -56,6 +62,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="scale-wrapper">
@@ -67,7 +74,6 @@
     </div>
   </div>
 
-  <!-- Fullscreen button -->
   <button class="fs-btn" onclick="document.documentElement.requestFullscreen()">
     Fullscreen
   </button>
