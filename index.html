@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="preconnect" href="https://studio.code.org">
+
   <style>
     html, body {
       margin: 0;
@@ -13,19 +15,22 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* disables scrolling */
     }
+
     .scale-wrapper {
       width: 440px;
       height: 400px;
       transform: scale(2.75);
       transform-origin: top center;
     }
+
     .crop {
       width: 440px;
       height: 370px;
       overflow: hidden;
     }
+
     iframe {
       width: 440px;
       height: 757px;
@@ -34,7 +39,9 @@
       transform: translateY(-20px);
       opacity: 0;
       transition: opacity 0.2s ease;
+      loading: eager; /* loads immediately like original */
     }
+
     .fs-btn {
       position: fixed;
       bottom: 16px;
@@ -47,22 +54,27 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
     .fs-btn:hover {
       background: #333;
     }
   </style>
 </head>
 <body>
+
   <div class="scale-wrapper">
     <div class="crop">
-      <iframe onload="this.style.opacity=1"
+      <iframe
+        onload="this.style.opacity=1"
         src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
         allowfullscreen>
       </iframe>
     </div>
   </div>
+
   <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
     Fullscreen
   </button>
+
 </body>
 </html>
