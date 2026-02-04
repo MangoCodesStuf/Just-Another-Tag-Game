@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="preconnect" href="https://studio.code.org">
 
   <style>
@@ -20,14 +19,14 @@
 
     .scale-wrapper {
       width: 440px;
-      height: 400px;
-      transform: scale(2.75);
+      height: 757px;
+      transform: scale(1); /* original scale */
       transform-origin: top center;
     }
 
     .crop {
       width: 440px;
-      height: 370px;
+      height: 757px; /* original crop */
       overflow: hidden;
     }
 
@@ -36,10 +35,8 @@
       height: 757px;
       border: 0;
       display: block;
-      transform: translateY(-20px);
       opacity: 0;
       transition: opacity 0.2s ease;
-      loading: eager; /* loads immediately like original */
     }
 
     .fs-btn {
