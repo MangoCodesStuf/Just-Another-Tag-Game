@@ -4,29 +4,36 @@
   <meta charset="UTF-8">
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Load link -->
   <link rel="preconnect" href="https://studio.code.org">
 
   <style>
-    html, body {
+    html {
+      background: #fff;
+    }
+
+    body {
       margin: 0;
       background: #fff;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      overflow: hidden; /* disables scrolling */
     }
 
+    /* Scaloing  */
     .scale-wrapper {
       width: 440px;
-      height: 757px;
-      transform: scale(1); /* original scale */
+      height: 400px;
+      transform: scale(2.75);
       transform-origin: top center;
     }
 
+    /* Crop */
     .crop {
       width: 440px;
-      height: 757px; /* original crop */
+      height: 370px;
       overflow: hidden;
     }
 
@@ -35,10 +42,14 @@
       height: 757px;
       border: 0;
       display: block;
+      transform: translateY(-20px);
+
+      /* fade-in for perceived speed */
       opacity: 0;
       transition: opacity 0.2s ease;
     }
 
+    /* Fullscreen */
     .fs-btn {
       position: fixed;
       bottom: 16px;
@@ -57,11 +68,13 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="scale-wrapper">
     <div class="crop">
       <iframe
+        loading="lazy"
         onload="this.style.opacity=1"
         src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
         allowfullscreen>
@@ -69,6 +82,7 @@
     </div>
   </div>
 
+  <!-- Fullscreen button -->
   <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
     Fullscreen
   </button>
