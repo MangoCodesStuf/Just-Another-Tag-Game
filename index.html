@@ -5,24 +5,19 @@
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Load link -->
   <link rel="preconnect" href="https://studio.code.org">
 
   <style>
-    html {
-      background: #fff;
-    }
-
-    body {
+    html, body {
       margin: 0;
       background: #fff;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+      overflow: hidden; /* scrolling disabled */
     }
 
-    /* Scaloing  */
     .scale-wrapper {
       width: 440px;
       height: 400px;
@@ -30,7 +25,6 @@
       transform-origin: top center;
     }
 
-    /* Crop */
     .crop {
       width: 440px;
       height: 370px;
@@ -43,13 +37,10 @@
       border: 0;
       display: block;
       transform: translateY(-20px);
-
-      /* fade-in for perceived speed */
       opacity: 0;
       transition: opacity 0.2s ease;
     }
 
-    /* Fullscreen */
     .fs-btn {
       position: fixed;
       bottom: 16px;
@@ -82,7 +73,6 @@
     </div>
   </div>
 
-  <!-- Fullscreen button -->
   <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
     Fullscreen
   </button>
