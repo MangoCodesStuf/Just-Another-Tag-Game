@@ -4,12 +4,8 @@
   <meta charset="UTF-8">
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Load link -->
   <link rel="preconnect" href="https://studio.code.org">
-
   <style>
-    /* FULL WHITE BACKGROUND & NO SCROLLING */
     html, body {
       margin: 0;
       background: #fff;
@@ -17,37 +13,28 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      overflow: hidden; /* 👈 disables all scrolling */
+      overflow: hidden;
     }
-
-    /* Scaling */
     .scale-wrapper {
       width: 440px;
       height: 400px;
       transform: scale(2.75);
       transform-origin: top center;
     }
-
-    /* Crop */
     .crop {
       width: 440px;
       height: 370px;
       overflow: hidden;
     }
-
     iframe {
       width: 440px;
       height: 757px;
       border: 0;
       display: block;
       transform: translateY(-20px);
-
-      /* fade-in for perceived speed */
       opacity: 0;
       transition: opacity 0.2s ease;
     }
-
-    /* Fullscreen button */
     .fs-btn {
       position: fixed;
       bottom: 16px;
@@ -60,30 +47,22 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     .fs-btn:hover {
       background: #333;
     }
   </style>
 </head>
-
 <body>
-
   <div class="scale-wrapper">
     <div class="crop">
-      <iframe
-        loading="lazy"
-        onload="this.style.opacity=1"
+      <iframe onload="this.style.opacity=1"
         src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
         allowfullscreen>
       </iframe>
     </div>
   </div>
-
-  <!-- Fullscreen button opens new tab -->
   <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
     Fullscreen
   </button>
-
 </body>
 </html>
