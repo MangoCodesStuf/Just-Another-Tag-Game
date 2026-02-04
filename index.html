@@ -9,20 +9,18 @@
   <link rel="preconnect" href="https://studio.code.org">
 
   <style>
-    html {
-      background: #fff;
-    }
-
-    body {
+    /* FULL WHITE BACKGROUND & NO SCROLLING */
+    html, body {
       margin: 0;
       background: #fff;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+      overflow: hidden; /* 👈 disables all scrolling */
     }
 
-    /* Scaloing  */
+    /* Scaling */
     .scale-wrapper {
       width: 440px;
       height: 400px;
@@ -49,7 +47,7 @@
       transition: opacity 0.2s ease;
     }
 
-    /* Fullscreen */
+    /* Fullscreen button */
     .fs-btn {
       position: fixed;
       bottom: 16px;
@@ -82,7 +80,7 @@
     </div>
   </div>
 
-  <!-- Fullscreen button -->
+  <!-- Fullscreen button opens new tab -->
   <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
     Fullscreen
   </button>
