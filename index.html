@@ -5,69 +5,97 @@
   <title>Just Another Tag Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://studio.code.org">
-
   <style>
     html, body {
       margin: 0;
-      background: #fff;
+      background: #fff; /* black bg behind */
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
     }
 
-    /* Cropping container */
+    .scale-wrapper {
+      width: 440px;
+      height: 400px;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
+    }
+
     .crop {
-      width: 1210px;     /* 440 * 2.75 */
-      height: 1072px;    /* 390 * 2.75 */
+      width: 440px;
+      height: 390px;
       overflow: hidden;
       position: relative;
+      background: white; /* white behind iframe */
     }
 
     iframe {
-      position: absolute;
-      top: -55px;        /* Adjust crop amount */
-      left: 0;
-      width: 1210px;
-      height: 2080px;    /* 757 * 2.75 */
+      width: 440px;
+      height: 757px;
       border: 0;
       display: block;
+      transform: translateY(-20px);
     }
 
-    .fs-btn {
-      position: fixed;
-      bottom: 16px;
-      right: 16px;
-      padding: 10px 14px;
-      font-size: 14px;
-      background: #222;
-      color: #fff;
-      border: 1px solid #555;
-      border-radius: 6px;
+    #runBtn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white; /* white overlay */
+      color: black;
+      font-size: 36px;
+      font-weight: bold;
+      font-family: "Arial Black", Gadget, sans-serif; /* nicer bold font */
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
-    }
-
-    .fs-btn:hover {
-      background: #333;
+      z-index: 10;
+      user-select: none;
+      transition: opacity 0.2s;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="crop">
-    <iframe
-      src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
-      allowfullscreen>
-    </iframe>
+  <div class="scale-wrapper" id="wrapper">
+    <div class="crop">
+      <iframe
+        id="gameFrame"
+        src="https://studio.code.org/projects/gamelab/60986542-df28-40a6-b628-176ee531402e/embed">
+      </iframe>
+      <div id="runBtn">RUN</div>
+    </div>
   </div>
 
-  <button class="fs-btn"
-    onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
-    Fullscreen
-  </button>
+  <script>
+    const runBtn = document.getElementById("runBtn");
+    const wrapper = document.getElementById("wrapper");
 
+    // Show RUN overlay after 0.2s
+    setTimeout(() => runBtn.style.display = "flex", 200);
+
+    // When clicked, hide overlay
+    runBtn.addEventListener("click", () => {
+      runBtn.style.opacity = 0;
+      setTimeout(() => runBtn.style.display = "none", 200);
+    });
+
+    // Function to adjust scale based on zoom/devicePixelRatio
+    function adjustScale() {
+      const zoom = window.devicePixelRatio || 1;
+      wrapper.style.transform = `scale(${2.75 / zoom})`; // old scale divided by zoom
+    }
+
+    // Initial scale
+    adjustScale();
+
+    // Update on resize/zoom
+    window.addEventListener("resize", adjustScale);
+  </script>
 </body>
 </html>
-
