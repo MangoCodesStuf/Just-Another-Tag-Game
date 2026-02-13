@@ -41,17 +41,19 @@
     #instruction {
       position: absolute;
       top: 50%;
-      left: -160px; /* left side */
+      left: -250px; /* move further left to fully show text */
       transform: translateY(-50%);
       background: rgba(255,255,255,0.9);
       padding: 10px 14px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
       font-family: "Arial", sans-serif;
       border-radius: 6px;
       box-shadow: 0 0 6px rgba(0,0,0,0.2);
       z-index: 5;
       white-space: nowrap;
+      width: 230px; /* ensure text fits */
+      text-align: left;
     }
   </style>
 </head>
@@ -73,13 +75,13 @@
     const instruction = document.getElementById("instruction");
     let instructionRemoved = false;
 
-    // Remove instruction 8s after first click anywhere
+    // Remove instruction 1s after first click anywhere
     function hideInstruction() {
       if (!instructionRemoved) {
         instructionRemoved = true;
         setTimeout(() => {
           instruction.style.display = "none";
-        }, 8000);
+        }, 1000); // 1 second
       }
     }
 
