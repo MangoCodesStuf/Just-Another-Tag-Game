@@ -32,7 +32,7 @@
 
     iframe {
       width: 440px;
-      height: 757px; /* full size */
+      height: 780px; /* <-- You can change the bottom length here */
       border: 0;
       display: block;
     }
@@ -61,6 +61,24 @@
       padding: 0 6px;
       border-radius: 3px;
     }
+
+    /* Fullscreen button at bottom right */
+    .fs-btn {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      padding: 10px 14px;
+      font-size: 14px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .fs-btn:hover {
+      background: #333;
+    }
   </style>
 </head>
 <body>
@@ -80,14 +98,14 @@
 
   </div>
 
+  <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/')">
+    Fullscreen
+  </button>
+
   <script>
     const instrContainer = document.getElementById("instrContainer");
     const closeBtn = document.getElementById("closeBtn");
 
     // Close button hides both text and itself
     closeBtn.addEventListener("click", () => {
-      instrContainer.style.display = "none";
-    });
-  </script>
-</body>
-</html>
+      instrContain
