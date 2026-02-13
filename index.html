@@ -15,31 +15,24 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      /* scroll enabled by default */
     }
 
-    .scale-wrapper {
-      width: 440px;
-      height: 400px;
-      transform: scale(2.75);
-      transform-origin: top center;
-    }
-
+    /* Cropping container */
     .crop {
-      width: 440px;
-      height: 390px;
+      width: 1210px;     /* 440 * 2.75 */
+      height: 1072px;    /* 390 * 2.75 */
       overflow: hidden;
+      position: relative;
     }
 
     iframe {
-      width: 440px;
-      height: 757px;
+      position: absolute;
+      top: -55px;        /* Adjust crop amount */
+      left: 0;
+      width: 1210px;
+      height: 2080px;    /* 757 * 2.75 */
       border: 0;
       display: block;
-      transform: translateY(-20px);
-      /* removed lazy-load and fade-in for instant load */
-      opacity: 1;
-      transition: none;
     }
 
     .fs-btn {
@@ -63,19 +56,18 @@
 
 <body>
 
-  <div class="scale-wrapper">
-    <div class="crop">
-      <iframe
-        src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
-        allowfullscreen>
-      </iframe>
-    </div>
+  <div class="crop">
+    <iframe
+      src="https://studio.code.org/projects/gamelab/EO2j1j28-I1q8-2bbN-I16T-29TO8T2N89j1/embed?nosource"
+      allowfullscreen>
+    </iframe>
   </div>
 
-  <button class="fs-btn" onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
+  <button class="fs-btn"
+    onclick="window.open('https://mangocodesstuf.github.io/Just-Another-Tag-Game/', '_blank')">
     Fullscreen
   </button>
 
 </body>
 </html>
-tml>
+
