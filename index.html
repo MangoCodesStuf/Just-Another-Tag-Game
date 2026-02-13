@@ -1,101 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <title>Just Another Tag Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    html, body {
-      margin: 0;
-      background: #fff; /* black bg behind */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+    /* Page */
+    html,body{
+      margin:0;
+      background:#fff;
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      height:100%;
+    }
+    .page {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding-top:22px;
     }
 
-    .scale-wrapper {
-      width: 440px;
-      height: 400px;
+    /* Instruction text (outside iframe) */
+    #instruction {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      user-select:none;
+      color:#111;
+      font-weight:700;
+      font-size:18px;
+      margin-bottom:8px;
+    }
+    #instruction .arrow {
+      font-size:22px;
+      transform: translateY(1px);
+    }
+
+    /* Container / crop (kept exactly like your working version) */
+    .scale-wrapper{
+      width:440px;
+      height:400px;
+      transform: scale(2.75);       /* keep your old scale */
       transform-origin: top center;
-      transition: transform 0.2s ease;
+    }
+    .crop{
+      width:440px;
+      height:390px;
+      overflow:hidden;
+      position:relative;
+      background:white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    .crop {
-      width: 440px;
-      height: 390px;
-      overflow: hidden;
-      position: relative;
-      background: white; /* white behind iframe */
+    iframe{
+      width:440px;
+      height:757px;
+      border:0;
+      display:block;
+      transform: translateY(-20px); /* your crop offset */
     }
 
-    iframe {
-      width: 440px;
-      height: 757px;
-      border: 0;
-      display: block;
-      transform: translateY(-20px);
+    /* Small hint styling after click success (optional) */
+    #doneHint {
+      margin-top:8px;
+      font-size:13px;
+      color:#666;
+      display:none;
     }
 
-    #runBtn {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white; /* white overlay */
-      color: black;
-      font-size: 36px;
-      font-weight: bold;
-      font-family: "Arial Black", Gadget, sans-serif; /* nicer bold font */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 10;
-      user-select: none;
-      transition: opacity 0.2s;
+    /* responsive on very small screens: scale down wrapper visually but keep crop */
+    @media (max-width:520px){
+      .scale-wrapper{ transform: scale(1.6); } /* fallback for very narrow screens */
     }
   </style>
 </head>
-
 <body>
-
-  <div class="scale-wrapper" id="wrapper">
-    <div class="crop">
-      <iframe
-        id="gameFrame"
-        src="https://studio.code.org/projects/gamelab/60986542-df28-40a6-b628-176ee531402e/embed">
-      </iframe>
-      <div id="runBtn">RUN</div>
+  <div class="page">
+    <!-- Instruction is outside the iframe area, pointing at the iframe.
+         It will be removed as soon as the iframe gets a real click/focus. -->
+    <div id="instruction" role="note" aria-live="polite">
+      <div>Click once to run</div>
+      <div class="arrow">→</div>
     </div>
+
+    <div class="scale-wrapper" id="wrapper">
+      <div class="crop">
+        <!-- your code.org embed: keep your project's embed URL here -->
+        <iframe
+          id="gameFrame"
+          title="Just Another Tag Game"
+          src="https://studio.code.org/projects/gamelab/60986542-df28-40a6-b628-176ee531402e/embed"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <div id="doneHint">If nothing happens, click once inside the game area.</div>
   </div>
 
   <script>
-    const runBtn = document.getElementById("runBtn");
-    const wrapper = document.getElementById("wrapper");
+    // Simple, robust logic to hide the external instruction as soon as the iframe receives a real user interaction.
+    (function(){
+      const instruction = document.getElementById('instruction');
+      const doneHint = document.getElementById('doneHint');
+      const iframe = document.getElementById('gameFrame');
 
-    // Show RUN overlay after 0.2s
-    setTimeout(() => runBtn.style.display = "flex", 200);
+      let hidden = false;
+      function hideInstruction(){
+        if(hidden) return;
+        hidden = true;
+        instruction.style.display = 'none';
+        // optionally show a tiny hint for debugging/clarity:
+        doneHint.style.display = 'none';
+        cleanup();
+      }
 
-    // When clicked, hide overlay
-    runBtn.addEventListener("click", () => {
-      runBtn.style.opacity = 0;
-      setTimeout(() => runBtn.style.display = "none", 200);
-    });
+      // CLEANUP: remove listeners / interval when hidden
+      function cleanup(){
+        window.removeEventListener('message', onMessage);
+        window.removeEventListener('blur', onBlur);       // fallback
+        window.removeEventListener('focus', onFocus);     // fallback
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+        iframe.removeEventListener('load', onIframeLoad);
+        iframe.removeEventListener('focus', onIframeFocus);
+        iframe.removeEventListener('pointerdown', onIframePointerDown);
+        if(pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+      }
 
-    // Function to adjust scale based on zoom/devicePixelRatio
-    function adjustScale() {
-      const zoom = window.devicePixelRatio || 1;
-      wrapper.style.transform = `scale(${2.75 / zoom})`; // old scale divided by zoom
-    }
+      // Handler attempts to detect a real user interaction inside iframe
+      // 1) pointerdown on iframe element (some browsers)
+      function onIframePointerDown(){
+        hideInstruction();
+      }
 
-    // Initial scale
-    adjustScale();
+      // 2) focus event on the iframe element (when user clicks inside, iframe gets focus)
+      function onIframeFocus(){
+        hideInstruction();
+      }
 
-    // Update on resize/zoom
-    window.addEventListener("resize", adjustScale);
+      // 3) polling: check document.activeElement === iframe (fallback)
+      let pollInterval = null;
+      function startPolling(){
+        if(pollInterval) return;
+        pollInterval = setInterval(() => {
+          try {
+            if(document.activeElement === iframe){
+              hideInstruction();
+            }
+          } catch (e) {
+            // ignore
+          }
+        }, 150);
+      }
+
+      // 4) message from iframe (if Code.org ever posts, extra safety)
+      function onMessage(e){
+        // do not rely on origin check because we only hide on any message; but we could check e.origin if desired
+        hideInstruction();
+      }
+
+      // 5) window blur/focus can indicate user switched focus to iframe in some browsers
+      function onBlur(){ startPolling(); } // on blur start polling
+      function onFocus(){ startPolling(); } // start polling too
+
+      // 6) hidden/visibilitychange: start polling as fallback
+      function onVisibilityChange(){ if(document.visibilityState === 'hidden') startPolling(); else startPolling(); }
+
+      // 7) iframe load — set some listeners
+      function onIframeLoad(){
+        // attach robust detectors
+        try {
+          iframe.contentWindow && iframe.contentWindow.focus && iframe.contentWindow.focus();
+        } catch(e){ /* cross-origin, ignore */ }
+
+        // listen for pointerdown and focus on the iframe element itself
+        iframe.addEventListener('pointerdown', onIframePointerDown);
+        iframe.addEventListener('focus', onIframeFocus);
+
+        // start polling as a fallback (covers browsers that don't fire focus/pointer events on the iframe element)
+        startPolling();
+      }
+
+      // wire up events
+      iframe.addEventListener('load', onIframeLoad);
+
+      window.addEventListener('message', onMessage, false);
+      window.addEventListener('blur', onBlur);
+      window.addEventListener('focus', onFocus);
+      document.addEventListener('visibilitychange', onVisibilityChange);
+
+      // Start polling immediately as well — helps detect clicks in some browsers
+      startPolling();
+
+      // As a final UX touch: if the user clicks anywhere in the page near the iframe (not on the iframe),
+      // we don't hide instruction — we only hide when iframe is actually focused/clicked.
+      // The code above hides only when iframe is the active element or fires pointerdown/focus.
+
+      // Also, if you want the instruction to disappear after a long idle or after the iframe posts a message,
+      // the message handler will also hide it.
+
+    })();
   </script>
 </body>
 </html>
